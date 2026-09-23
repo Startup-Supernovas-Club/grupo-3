@@ -1,3 +1,7 @@
 export function truncateAddress(address: string): string {
   return `${address.slice(0, 4)}...${address.slice(-4)}`
 }
+
+export function isValidStellarAddress(address: string): boolean {
+  return /^G[A-Z2-7]{55}$/.test(address)
+}
