@@ -4,6 +4,10 @@ import { useEffect, useState, useCallback } from 'react'
 import { useWalletStore } from '@/store/walletStore'
 import { initWalletKit, StellarWalletsKit } from '@/lib/walletKit'
 
+function truncateAddress(address: string): string {
+  return `${address.slice(0, 4)}...${address.slice(-4)}`
+}
+
 export default function Navbar() {
   const { address, isConnected, setAddress, reset } = useWalletStore()
   const [mounted, setMounted] = useState(false)
@@ -51,6 +55,12 @@ export default function Navbar() {
         <div className="flex items-center gap-2">
           {!mounted ? null : isConnected && address ? (
             <>
+              {/* Address pill */}
+              <div className="flex items-center gap-1 rounded-full border border-zinc-700 bg-zinc-900 px-3 py-1.5">
+                <span className="font-mono text-sm text-zinc-200">
+                  {truncateAddress(address)}
+                </span>
+              </div>
               {/* Disconnect */}
               <button
                 onClick={disconnect}
