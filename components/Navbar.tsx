@@ -5,7 +5,7 @@ import { useWalletStore } from '@/store/walletStore'
 import { initWalletKit, StellarWalletsKit } from '@/lib/walletKit'
 
 export default function Navbar() {
-  const { setAddress } = useWalletStore()
+  const { address, isConnected, setAddress, reset } = useWalletStore()
   const [mounted, setMounted] = useState(false)
   const [connecting, setConnecting] = useState(false)
 
@@ -27,6 +27,15 @@ export default function Navbar() {
     }
   }, [setAddress])
 
+  const disconnect = useCallback(async () => {
+    try {
+      await StellarWalletsKit.disconnect()
+    } catch {
+      // ignore disconnect errors
+    }
+    reset()
+  }, [reset])
+
   return (
     <nav className="w-full border-b border-zinc-800 bg-zinc-950 px-6 py-4">
       <div className="mx-auto flex max-w-7xl items-center justify-between">
@@ -40,7 +49,17 @@ export default function Navbar() {
 
         {/* Wallet area */}
         <div className="flex items-center gap-2">
-          {!mounted ? null : (
+          {!mounted ? null : isConnected && address ? (
+            <>
+              {/* Disconnect */}
+              <button
+                onClick={disconnect}
+                className="rounded-full border border-zinc-700 bg-zinc-900 px-3 py-1.5 text-sm text-zinc-400 transition hover:border-red-500/50 hover:text-red-400"
+              >
+                Disconnect
+              </button>
+            </>
+          ) : (
             <button
               onClick={connect}
               disabled={connecting}
