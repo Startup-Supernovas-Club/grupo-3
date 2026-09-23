@@ -57,6 +57,9 @@ export default function Navbar() {
           <span className="text-lg font-semibold text-white tracking-tight">
             Stellar App
           </span>
+          <span className="ml-1 rounded-full bg-violet-500/20 px-2 py-0.5 text-xs font-medium text-violet-300">
+            Testnet
+          </span>
         </div>
 
         {/* Wallet area */}
